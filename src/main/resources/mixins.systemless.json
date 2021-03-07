@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "dev.systemless.systemless.mixin",
+  "refmap": "mixin.systemless.refmap.json",
+  "verbose": true,
+  "mixins": [
+    "client.MixinMinecraft",
+    "client.gui.MixinFontRenderer",
+    "client.gui.MixinGuiMainMenu"
+  ]
+}
