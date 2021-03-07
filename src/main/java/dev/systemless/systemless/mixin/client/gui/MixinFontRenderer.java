@@ -9,17 +9,23 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(FontRenderer.class)
 public class MixinFontRenderer {
+    /**
+     * Changes the text variable to Systemless.
+     * @param s Text variable
+     * @return Systemless
+     */
+
     @NotNull
     @Contract(pure = true)
     @ModifyVariable(method = "renderString", ordinal = 0, at = @At(value = "HEAD"))
-    private String getSystemlessTextTwo(String s) {
+    private String renderSystemlessString(String s) {
         return "Systemless";
     }
 
     @NotNull
     @Contract(pure = true)
     @ModifyVariable(method = "getStringWidth", ordinal = 0, at = @At(value = "HEAD"))
-    private String getSystemlessTextThree(String s) {
+    private String getSystemlessStringWidth(String s) {
         return "Systemless";
     }
 }

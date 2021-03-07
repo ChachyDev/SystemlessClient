@@ -22,6 +22,7 @@ public class MixinMinecraft {
 
     @Inject(method = "startGame", at = @At("HEAD"))
     private void startGame(CallbackInfo ci) {
+        // Register systemless.
         defaultResourcePacks.add(new ClassLoaderResourcePack("systemless"));
         EventBusKt.getEventBus().register(Systemless.INSTANCE);
         EventBusKt.getEventBus().post(new PreSystemlessEvent());
