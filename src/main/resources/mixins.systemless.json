@@ -6,7 +6,6 @@
   "verbose": true,
   "mixins": [
     "client.MixinMinecraft",
-    "client.gui.MixinFontRenderer",
-    "client.gui.MixinGuiMainMenu"
+    "client.gui.MixinFontRenderer"
   ]
 }
