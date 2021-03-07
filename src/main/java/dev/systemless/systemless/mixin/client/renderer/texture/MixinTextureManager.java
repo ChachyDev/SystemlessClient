@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class MixinTextureManager {
     @NotNull
     @Contract(pure = true)
-    @ModifyVariable(method = "bindTexture", print = true, ordinal = 0, at = @At(value = "HEAD"))
+    @ModifyVariable(method = "bindTexture", ordinal = 0, at = @At(value = "HEAD"))
     private ResourceLocation getSystemlessTextFour(ResourceLocation location) {
         if (location.getResourcePath().equals("textures/font/ascii.png")) return location;
         return new ResourceLocation("systemless", "systemless.png");
