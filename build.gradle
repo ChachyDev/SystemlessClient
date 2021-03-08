@@ -54,17 +54,15 @@ minecraft {
 }
 
 dependencies {
-    embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+    compileOnly('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
 
-    embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    embed 'com.github.KevinPriv:KEventBus:86cf2e023e'
-
-    embed fileTree(dir: 'libs', include: '*.jar')
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compileOnly 'com.github.KevinPriv:KEventBus:86cf2e023e'
 }
 
 mixin {
