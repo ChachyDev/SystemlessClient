@@ -28,7 +28,7 @@ buildscript {
 
 configurations {
     embed
-    implementation.extendsFrom(embed)
+    compile.extendsFrom(embed)
 }
 
 apply plugin: 'net.minecraftforge.gradle.tweaker-client'
@@ -54,15 +54,14 @@ minecraft {
 }
 
 dependencies {
-    compileOnly('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+    embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
 
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compileOnly 'com.github.KevinPriv:KEventBus:86cf2e023e'
+    embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 mixin {
@@ -91,7 +90,7 @@ processResources {
 }
 
 jar {
-    dependsOn configurations.implementation
+    dependsOn configurations.compile
     from {
         configurations.embed.collect {
             it.isDirectory() ? it : zipTree(it)
