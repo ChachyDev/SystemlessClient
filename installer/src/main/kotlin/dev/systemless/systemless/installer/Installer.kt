@@ -9,8 +9,14 @@ import java.io.File
 import java.io.IOException
 import java.net.URL
 import java.time.Instant
+import kotlin.concurrent.thread
 import kotlin.system.exitProcess
+import kotlin.system.measureTimeMillis
 
+
+/**
+ * fyi this was thrown together in minutes i have school tomorrow
+ */
 
 object Installer {
     @JvmStatic
@@ -34,53 +40,65 @@ object Installer {
         val version = File(minecraftDir, "versions/Systemless")
         version.mkdirs()
 
+        println("Created version folder")
+
         File(version, "Systemless.json").writeBytes(
             this::class.java.getResourceAsStream("/version.json").use { it.readBytes() })
 
-        val url = URL("https://github.com/ChachyDev/SystemlessClient/releases/download/0.0.1-master-dev/SystemlessClient-0.0.1-master-dev.jar")
-        val conn = url.openConnection()
-        val size = conn.contentLength
+        println("Created version file")
+
+        val url =
+            URL("https://github.com/ChachyDev/SystemlessClient/releases/download/0.0.1-master-dev/SystemlessClient-0.0.1-master-dev.jar")
+
+        println("Preparing for download")
 
         val libFolder = File(minecraftDir, "libraries/dev/systemless/Systemless/1.2.3")
         libFolder.mkdirs()
 
-        try {
-            BufferedInputStream(url.openStream()).use { `in` ->
-                File(libFolder, "Systemless-1.2.3.jar").outputStream().use { fileOutputStream ->
-                    val dataBuffer = ByteArray(1024)
-                    var bytesRead: Int
-                    var sumCount = 0.0
-                    while (`in`.read(dataBuffer, 0, 1024).also { bytesRead = it } != -1) {
-                        fileOutputStream.write(dataBuffer, 0, bytesRead)
+        println("Created library folder")
 
-                        sumCount += bytesRead
-                        if (size > 0) {
-                            println("Downloaded ${sumCount / size * 100.0}%")
+        thread(true) {
+            try {
+                val time = measureTimeMillis {
+                    BufferedInputStream(url.openStream()).use { `in` ->
+                        File(libFolder, "Systemless-1.2.3.jar").outputStream().use { fileOutputStream ->
+                            val dataBuffer = ByteArray(1024)
+                            var bytesRead: Int
+                            while (`in`.read(dataBuffer, 0, 1024).also { bytesRead = it } != -1) {
+                                fileOutputStream.write(dataBuffer, 0, bytesRead)
+                            }
                         }
                     }
                 }
+
+                println("Downloaded client in ${time}ms")
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
+
+            println("Appending installation to launcher profiles")
+
+            val profile = File(minecraftDir, "launcher_profiles.json")
+
+            val json = JsonParser().parse(profile.readText()).asJsonObject
+            println("Parsed launcher_profiles.json")
+            val profiles = json["profiles"].asJsonObject
+            val profileObj = JsonObject()
+            val instant = Instant.ofEpochMilli(System.currentTimeMillis())
+            profileObj.addProperty("name", "Systemless")
+            profileObj.addProperty("lastVersionId", "Systemless")
+            profileObj.addProperty("type", "custom")
+            profileObj.addProperty("created", instant.toString())
+            profileObj.addProperty("lastUsed", instant.toString())
+            profileObj.addProperty("icon", "Furnace")
+            profiles.add("Systemless", profileObj)
+            json.addProperty("selectedProfile", "Systemless")
+            println("Appended to file")
+            profile.writeText(Gson().toJson(json))
+            println("Saved to file")
+
+            println("Done!")
         }
-
-        val profile = File(minecraftDir, "launcher_profiles.json")
-
-        val json = JsonParser().parse(profile.readText()).asJsonObject
-        val profiles = json["profiles"].asJsonObject
-        val profileObj = JsonObject()
-        val instant = Instant.ofEpochMilli(System.currentTimeMillis())
-        profileObj.addProperty("name", "Systemless")
-        profileObj.addProperty("lastVersionId", "Systemless")
-        profileObj.addProperty("type", "custom")
-        profileObj.addProperty("created", instant.toString())
-        profileObj.addProperty("lastUsed", instant.toString())
-        profileObj.addProperty("icon", "Furnace")
-        profiles.add("Systemless", profileObj)
-        json.addProperty("selectedProfile", "Systemless")
-        profile.writeText(Gson().toJson(json))
-
-        println("Done!")
     }
 
     private fun findPlatformDirectory() = with(System.getProperty("os.name")) {
