@@ -9,6 +9,7 @@ import java.io.File
 import java.io.IOException
 import java.net.URL
 import java.time.Instant
+import javax.swing.JOptionPane
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
@@ -26,8 +27,8 @@ object Installer {
         val accept = args.exists("accept")
 
         if (!accept) {
-            println("You did not accept to install. No")
-            exitProcess(0)
+            val r = JOptionPane.showConfirmDialog(null, "Do you agree to installing Systemless Client?")
+            if (r != JOptionPane.YES_OPTION) exitProcess(0)
         }
 
         val minecraftDir = args["minecraftDir"]?.let { File(it) } ?: findPlatformDirectory()
