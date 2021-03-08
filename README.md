@@ -1,14 +1,14 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-# Systemless Client
+# Systemless
 
-Systemless. Everywhere, forever.
+Systemless. Systemless, Systemless.
 
 </div>
 
-# Screenshots:
+# Systemless:
 
-![Hypixel](https://github.com/ChachyDev/SystemlessClient/blob/master/.github/screenshots/hypixel.png?raw=true "Hypixel")
+![Systemless](https://github.com/ChachyDev/SystemlessClient/blob/master/.github/screenshots/hypixel.png?raw=true "Systemless")
 
-![Main Menu](https://github.com/ChachyDev/SystemlessClient/blob/master/.github/screenshots/main.png?raw=true "Main Menu")
+![Systemless](https://github.com/ChachyDev/SystemlessClient/blob/master/.github/screenshots/main.png?raw=true "Systemless")
