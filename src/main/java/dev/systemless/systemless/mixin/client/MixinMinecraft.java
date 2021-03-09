@@ -22,7 +22,8 @@ public abstract class MixinMinecraft {
     @Final
     private List<IResourcePack> defaultResourcePacks;
 
-    @Shadow protected abstract ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException;
+    @Shadow
+    protected abstract ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException;
 
     @Inject(method = "startGame", at = @At("HEAD"))
     private void startGame(CallbackInfo ci) {
@@ -36,10 +37,9 @@ public abstract class MixinMinecraft {
         InputStream inputstream = this.getClass().getResourceAsStream("/assets/systemless/systemless16.png");
         InputStream inputstream1 = this.getClass().getResourceAsStream("/assets/systemless/systemless32.png");
 
-        if (inputstream != null && inputstream1 != null)
-        {
+        if (inputstream != null && inputstream1 != null) {
             try {
-                Display.setIcon(new ByteBuffer[] {this.readImageToBuffer(inputstream), this.readImageToBuffer(inputstream1)});
+                Display.setIcon(new ByteBuffer[]{this.readImageToBuffer(inputstream), this.readImageToBuffer(inputstream1)});
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
